@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui webenginewidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -12,7 +12,14 @@ TARGET = inputmethods
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp
+SOURCES += main.cpp \
+    window.cpp \
+    webview.cpp \
+    controlview.cpp \
+    testview.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += \
+    window.h \
+    webview.h \
+    controlview.h \
+    testview.h
