@@ -7,6 +7,8 @@
 #include <QPushButton>
 #include <QSpinBox>
 
+#include "colorpicker.h"
+
 ControlView::ControlView(QWidget *parent)
     : QWidget(parent)
 {
@@ -15,8 +17,8 @@ ControlView::ControlView(QWidget *parent)
 
     QFormLayout *layout = new QFormLayout;
     layout->addRow(tr("Underline Style:"), new QComboBox);
-    layout->addRow(tr("Underline Color:"), new QLineEdit);
-    layout->addRow(tr("Background Color:"), new QLineEdit);
+    layout->addRow(tr("Underline Color:"), new ColorPicker);
+    layout->addRow(tr("Background Color:"), new ColorPicker);
     layout->addRow(tr("Start:"), new QSpinBox);
     layout->addRow(tr("End:"), new QSpinBox);
     layout->addRow(tr("Input:"), new QLineEdit);

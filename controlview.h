@@ -8,10 +8,6 @@ class ControlView : public QWidget
     Q_OBJECT
 public:
     explicit ControlView(QWidget *parent = 0);
-
-signals:
-
-public slots:
 };
 
 #endif // CONTROLVIEW_H
