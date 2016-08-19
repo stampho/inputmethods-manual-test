@@ -22,6 +22,11 @@ ColorPicker::ColorPicker(QWidget *parent)
     connect(m_selectButton, &QPushButton::clicked, this, &ColorPicker::selectButtonClicked);
 }
 
+QColor ColorPicker::color() const
+{
+    return m_colorInput->palette().color(QPalette::Base);
+}
+
 void ColorPicker::colorStringChanged(const QString &colorString)
 {
     QColor color(colorString);
@@ -33,7 +38,6 @@ void ColorPicker::colorStringChanged(const QString &colorString)
 
 void ColorPicker::selectButtonClicked()
 {
-    const QColor &currentColor = m_colorInput->palette().color(QPalette::Base);
-    QColor color = QColorDialog::getColor(currentColor, this, "Select Color", QColorDialog::ShowAlphaChannel);
-    m_colorInput->setText(color.name(QColor::HexArgb));
+    QColor selectedColor = QColorDialog::getColor(color(), this, "Select Color", QColorDialog::ShowAlphaChannel);
+    m_colorInput->setText(selectedColor.name(QColor::HexArgb));
 }

@@ -1,7 +1,11 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include <QWidget>
+#include <QMainWindow>
+
+class ControlView;
+class TestView;
+class WebView;
 
 class Window : public QWidget
 {
@@ -10,6 +14,11 @@ class Window : public QWidget
 public:
     Window(QWidget *parent = 0);
     ~Window();
+
+private:
+    ControlView *m_controlView;
+    WebView *m_webView;
+    TestView *m_testView;
 };
 
 #endif // WINDOW_H
