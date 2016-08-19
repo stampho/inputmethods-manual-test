@@ -28,7 +28,13 @@ Window::Window(QWidget *parent)
 
     connect(m_controlView, &ControlView::forwardEvent, [=](QInputMethodEvent im) {
         bool processed = QApplication::sendEvent(m_webView->focusProxy(), &im);
+        // TODO(pvarga): Send this result back to ControlView
         qDebug() << processed;
+    });
+
+    // TODO(pvarga): This is for testing only. Remove it.
+    connect(m_webView, &WebView::loadFinished, [=]() {
+        m_controlView->sendEvent(1, 3, QTextCharFormat::SingleUnderline, QColor(255, 0, 0, 255), QColor(), QStringLiteral("Test message"));
     });
 }
 

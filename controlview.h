@@ -19,6 +19,7 @@ public:
     explicit ControlView(QWidget *parent = 0);
 
 public slots:
+    void sendEvent(int, int, QTextCharFormat::UnderlineStyle, const QColor &, const QColor &, const QString &);
     void sendEvent();
 
 signals:

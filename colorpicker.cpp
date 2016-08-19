@@ -24,7 +24,12 @@ ColorPicker::ColorPicker(QWidget *parent)
 
 QColor ColorPicker::color() const
 {
-    return m_colorInput->palette().color(QPalette::Base);
+    return QColor(m_colorInput->text());
+}
+
+void ColorPicker::setColor(const QColor &color)
+{
+    m_colorInput->setText(color.isValid() ? color.name(QColor::HexArgb) : QStringLiteral(""));
 }
 
 void ColorPicker::colorStringChanged(const QString &colorString)
@@ -38,6 +43,9 @@ void ColorPicker::colorStringChanged(const QString &colorString)
 
 void ColorPicker::selectButtonClicked()
 {
-    QColor selectedColor = QColorDialog::getColor(color(), this, "Select Color", QColorDialog::ShowAlphaChannel);
+    QColor selectedColor = QColorDialog::getColor(color().isValid() ? color() : Qt::white,
+                                                  this,
+                                                  "Select Color",
+                                                  QColorDialog::ShowAlphaChannel);
     m_colorInput->setText(selectedColor.name(QColor::HexArgb));
 }

@@ -31,6 +31,7 @@ ControlView::ControlView(QWidget *parent)
     setFixedWidth(300);
 
     m_sendEventButton->setText(tr("Send Event"));
+    // TODO(pvarga): Implement this
     m_processedLabel->setText("<font color='green'>PASS</font>");
 
     QFormLayout *layout = new QFormLayout;
@@ -44,13 +45,31 @@ ControlView::ControlView(QWidget *parent)
     layout->addRow(tr("Processed:"), m_processedLabel);
     setLayout(layout);
 
-    connect(m_sendEventButton, &QPushButton::clicked, this, &ControlView::sendEvent);
+    connect(m_sendEventButton, SIGNAL(clicked(bool)), this, SLOT(sendEvent()));
     connect(m_inputLine, &QLineEdit::textChanged, [=]() {
         if (m_eventSent) {
             QCoreApplication::sendEvent(m_inputLine, new QInputMethodEvent(QString(), QList<QInputMethodEvent::Attribute>()));
             m_eventSent = false;
         }
     });
+}
+
+void ControlView::sendEvent(int start,
+                            int end,
+                            QTextCharFormat::UnderlineStyle underlineStyle,
+                            const QColor &underlineColor,
+                            const QColor &backgroundColor,
+                            const QString &input)
+{
+    m_startSpin->setValue(start);
+    m_endSpin->setValue(end);
+    // TODO(pvarga): Choose index by data
+    m_underlineStyleCombo->setCurrentIndex(underlineStyle);
+    m_underlineColorPicker->setColor(underlineColor);
+    m_backgroundColorPicker->setColor(backgroundColor);
+    m_inputLine->setText(input);
+
+    sendEvent();
 }
 
 void ControlView::sendEvent()
@@ -61,7 +80,10 @@ void ControlView::sendEvent()
     QTextCharFormat format;
     format.setUnderlineStyle(static_cast<QTextCharFormat::UnderlineStyle>(m_underlineStyleCombo->currentData().toInt()));
     format.setUnderlineColor(m_underlineColorPicker->color());
-    format.setBackground(QBrush(m_backgroundColorPicker->color()));
+
+    const QColor &backgroundColor = m_backgroundColorPicker->color();
+    if (backgroundColor.isValid())
+        format.setBackground(QBrush(backgroundColor));
 
     QList<QInputMethodEvent::Attribute> attrs;
     attrs.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, start, end, format));

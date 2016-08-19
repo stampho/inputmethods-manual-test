@@ -14,6 +14,7 @@ public:
     explicit ColorPicker(QWidget *parent = 0);
 
     QColor color() const;
+    void setColor(const QColor &);
 
 public slots:
     void colorStringChanged(const QString &);
