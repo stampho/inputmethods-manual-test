@@ -47,5 +47,6 @@ void ColorPicker::selectButtonClicked()
                                                   this,
                                                   "Select Color",
                                                   QColorDialog::ShowAlphaChannel);
+    // FIXME(pvarga): selectedColor is black on Cancel
     m_colorInput->setText(selectedColor.name(QColor::HexArgb));
 }

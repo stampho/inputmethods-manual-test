@@ -1,8 +1,10 @@
 #ifndef TESTVIEW_H
 #define TESTVIEW_H
 
+#include <QTextCharFormat>
 #include <QWidget>
 
+class QPushButton;
 class QTableView;
 
 class TestView : public QWidget
@@ -11,8 +13,15 @@ class TestView : public QWidget
 public:
     explicit TestView(QWidget *parent = 0);
 
+public slots:
+    void startTest();
+
+signals:
+    void sendEvent(int, int, QTextCharFormat::UnderlineStyle, const QColor &, const QColor &, const QString &);
+
 private:
     QTableView *m_tableView;
+    QPushButton *m_testButton;
 };
 
 #endif // TESTVIEW_H

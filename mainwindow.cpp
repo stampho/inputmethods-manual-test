@@ -46,7 +46,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     QHBoxLayout *centralLayout = new QHBoxLayout;
     centralLayout->addLayout(leftLayout);
+    // TODO(pvarga): Resizing doesn't grow Test View
     centralLayout->addWidget(m_testView);
+
+    connect(m_testView, SIGNAL(sendEvent(int,int,QTextCharFormat::UnderlineStyle,QColor,QColor,QString)),
+            m_controlView, SLOT(sendEvent(int,int,QTextCharFormat::UnderlineStyle,QColor,QColor,QString)));
 
     connect(m_controlView, &ControlView::forwardEvent, [=](QInputMethodEvent im) {
         bool processed;
