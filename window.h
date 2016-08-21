@@ -4,6 +4,8 @@
 #include <QMainWindow>
 
 class ControlView;
+class QLabel;
+class ReferenceView;
 class TestView;
 class WebView;
 
@@ -17,8 +19,12 @@ public:
 
 private:
     ControlView *m_controlView;
+    ReferenceView *m_referenceView;
     WebView *m_webView;
     TestView *m_testView;
+
+    QLabel *m_referenceProcessed;
+    QLabel *m_webProcessed;
 };
 
 #endif // WINDOW_H

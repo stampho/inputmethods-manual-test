@@ -17,11 +17,13 @@ SOURCES += main.cpp \
     webview.cpp \
     controlview.cpp \
     testview.cpp \
-    colorpicker.cpp
+    colorpicker.cpp \
+    referenceview.cpp
 
 HEADERS  += \
     window.h \
     webview.h \
     controlview.h \
     testview.h \
-    colorpicker.h
+    colorpicker.h \
+    referenceview.h

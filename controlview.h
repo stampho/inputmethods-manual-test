@@ -33,9 +33,6 @@ private:
     QSpinBox *m_endSpin;
     QLineEdit *m_inputLine;
     QPushButton *m_sendEventButton;
-    QLabel *m_processedLabel;
-
-    bool m_eventSent;
 };
 
 #endif // CONTROLVIEW_H
