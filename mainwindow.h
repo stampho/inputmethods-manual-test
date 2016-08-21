@@ -1,5 +1,5 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
 #include <QMainWindow>
 
@@ -9,13 +9,13 @@ class ReferenceView;
 class TestView;
 class WebView;
 
-class Window : public QWidget
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    Window(QWidget *parent = 0);
-    ~Window();
+    MainWindow(QWidget *parent = 0);
+    ~MainWindow();
 
 private:
     ControlView *m_controlView;
@@ -27,4 +27,4 @@ private:
     QLabel *m_webProcessed;
 };
 
-#endif // WINDOW_H
+#endif // MAINWINDOW_H

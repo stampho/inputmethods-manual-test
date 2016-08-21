@@ -8,7 +8,7 @@ ReferenceView::ReferenceView(QWidget *parent)
 {
     m_referenceInput->setMinimumHeight(50);
     m_referenceInput->setMaximumWidth(250);
-    m_referenceInput->setFont(QFont(QStringLiteral("Serif"), 32));
+    m_referenceInput->setFont(QFont(QStringLiteral("Serif"), 28));
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(m_referenceInput);

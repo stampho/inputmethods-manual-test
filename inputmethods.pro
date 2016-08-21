@@ -12,18 +12,19 @@ TARGET = inputmethods
 TEMPLATE = app
 
 
-SOURCES += main.cpp \
-    window.cpp \
-    webview.cpp \
-    controlview.cpp \
-    testview.cpp \
+SOURCES += \
     colorpicker.cpp \
-    referenceview.cpp
+    controlview.cpp \
+    main.cpp \
+    mainwindow.cpp \
+    referenceview.cpp \
+    testview.cpp \
+    webview.cpp
 
 HEADERS  += \
-    window.h \
-    webview.h \
-    controlview.h \
-    testview.h \
     colorpicker.h \
-    referenceview.h
+    controlview.h \
+    mainwindow.h \
+    referenceview.h \
+    testview.h \
+    webview.h

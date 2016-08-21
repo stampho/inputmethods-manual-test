@@ -13,7 +13,7 @@ WebView::WebView(QWidget *parent)
             "<html><head>"
             "   <style>"
             "       input {"
-            "           width: 250px; height: 50px; font-size: 32pt;"
+            "           width: 250px; height: 50px; font-size: 28pt;"
             "           position: absolute; top: 50%; left: 50%; margin-left: -125px; margin-top: -25px;"
             "           font-family: serif"
             "       }"

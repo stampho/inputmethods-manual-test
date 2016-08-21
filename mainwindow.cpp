@@ -1,4 +1,4 @@
-#include "window.h"
+#include "mainwindow.h"
 
 #include <QApplication>
 #include <QFormLayout>
@@ -12,8 +12,8 @@
 #include "testview.h"
 #include "webview.h"
 
-Window::Window(QWidget *parent)
-    : QWidget(parent)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
     , m_controlView(new ControlView)
     , m_referenceView(new ReferenceView)
     , m_webView(new WebView)
@@ -21,6 +21,8 @@ Window::Window(QWidget *parent)
     , m_referenceProcessed(new QLabel)
     , m_webProcessed(new QLabel)
 {
+    QWidget *centralWidget = new QWidget;
+
     QGroupBox *referenceGroup = new QGroupBox(QStringLiteral("Reference"));
     QFormLayout *referenceProcessedForm = new QFormLayout;
     referenceProcessedForm->addRow(tr("Processed:"), m_referenceProcessed);
@@ -42,11 +44,9 @@ Window::Window(QWidget *parent)
     leftLayout->addWidget(referenceGroup);
     leftLayout->addWidget(webGroup);
 
-    QHBoxLayout *mainLayout = new QHBoxLayout;
-    mainLayout->addLayout(leftLayout);
-    mainLayout->addWidget(m_testView);
-
-    setLayout(mainLayout);
+    QHBoxLayout *centralLayout = new QHBoxLayout;
+    centralLayout->addLayout(leftLayout);
+    centralLayout->addWidget(m_testView);
 
     connect(m_controlView, &ControlView::forwardEvent, [=](QInputMethodEvent im) {
         bool processed;
@@ -63,13 +63,17 @@ Window::Window(QWidget *parent)
         m_webProcessed->setText(resultText);
     });
 
+    centralWidget->setLayout(centralLayout);
+    setCentralWidget(centralWidget);
+    setWindowTitle(tr("Input Methods Format Manual Test"));
+
     // TODO(pvarga): This is for testing only. Remove it.
     connect(m_webView, &WebView::loadFinished, [=]() {
         m_controlView->sendEvent(1, 3, QTextCharFormat::SingleUnderline, Qt::red, QColor(), QStringLiteral("Test message"));
     });
 }
 
-Window::~Window()
+MainWindow::~MainWindow()
 {
 
 }
