@@ -82,11 +82,6 @@ MainWindow::MainWindow(QWidget *parent)
     centralWidget->setLayout(centralLayout);
     setCentralWidget(centralWidget);
     setWindowTitle(tr("Input Methods Format Manual Test"));
-
-    // TODO(pvarga): This is for testing only. Remove it.
-    connect(m_webView, &WebView::loadFinished, [=]() {
-        m_controlView->sendEvent(1, 3, QTextCharFormat::SingleUnderline, Qt::red, QColor(), QStringLiteral("Test message"));
-    });
 }
 
 MainWindow::~MainWindow()

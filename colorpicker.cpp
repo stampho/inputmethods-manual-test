@@ -29,7 +29,8 @@ QColor ColorPicker::color() const
 
 void ColorPicker::setColor(const QColor &color)
 {
-    m_colorInput->setText(color.isValid() ? color.name(QColor::HexArgb) : QStringLiteral(""));
+    if (color.isValid())
+        m_colorInput->setText(color.name(QColor::HexArgb));
 }
 
 void ColorPicker::colorStringChanged(const QString &colorString)
@@ -47,6 +48,5 @@ void ColorPicker::selectButtonClicked()
                                                   this,
                                                   "Select Color",
                                                   QColorDialog::ShowAlphaChannel);
-    // FIXME(pvarga): selectedColor is black on Cancel
-    m_colorInput->setText(selectedColor.name(QColor::HexArgb));
+    setColor(selectedColor);
 }

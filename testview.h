@@ -14,6 +14,7 @@ public:
     explicit TestView(QWidget *parent = 0);
 
 public slots:
+    void loadTestData(const QString &);
     void startTest();
 
 signals:

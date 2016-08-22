@@ -1,7 +1,9 @@
 #include "testview.h"
 
+#include <QFile>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QRegExp>
 #include <QStandardItemModel>
 #include <QTableView>
 #include <QTest>
@@ -22,43 +24,44 @@ TestView::TestView(QWidget *parent)
     layout->addWidget(m_testButton);
     setLayout(layout);
 
-    QStandardItemModel *model = new QStandardItemModel(2, 7, this);
+    QStandardItemModel *model = new QStandardItemModel(0, 6, this);
     model->setHorizontalHeaderItem(0, new QStandardItem(tr("Input")));
     model->setHorizontalHeaderItem(1, new QStandardItem(tr("Start")));
     model->setHorizontalHeaderItem(2, new QStandardItem(tr("End")));
     model->setHorizontalHeaderItem(3, new QStandardItem(tr("Underline")));
     model->setHorizontalHeaderItem(4, new QStandardItem(tr("Underline Color")));
-    model->setHorizontalHeaderItem(5, new QStandardItem(tr("Background")));
-    model->setHorizontalHeaderItem(6, new QStandardItem(tr("Background Color")));
+    model->setHorizontalHeaderItem(5, new QStandardItem(tr("Background Color")));
 
     m_tableView->setModel(model);
 
-    // Dummy test entry #1
-    model->setItem(0, 0, new QStandardItem("This is Qt"));
-    model->setItem(0, 1, new QStandardItem("8"));
-    model->setItem(0, 2, new QStandardItem("10"));
-    model->setItem(0, 3, new QStandardItem("1"));
-    model->setItem(0, 4, new QStandardItem("#ffff0000"));
-    model->setItem(0, 5, new QStandardItem("1"));
-    model->setItem(0, 6, new QStandardItem("#ff00ff00"));
+    loadTestData(":/testdata.csv");
+}
 
-    // Dummy test entry #2
-    model->setItem(1, 0, new QStandardItem("This is Qt"));
-    model->setItem(1, 1, new QStandardItem("5"));
-    model->setItem(1, 2, new QStandardItem("7"));
-    model->setItem(1, 3, new QStandardItem("1"));
-    model->setItem(1, 4, new QStandardItem("green"));
-    model->setItem(1, 5, new QStandardItem("1"));
-    model->setItem(1, 6, new QStandardItem("red"));
+void TestView::loadTestData(const QString &testDataPath)
+{
+    QFile testDataFile(testDataPath);
+    if (!testDataFile.open(QIODevice::ReadOnly)) {
+        qWarning() << "Unable to open " << testDataFile.fileName() << ":" << testDataFile.errorString();
+        return;
+    }
 
-    // Dummy test entry #3
-    model->setItem(2, 0, new QStandardItem("The End"));
-    model->setItem(2, 1, new QStandardItem("0"));
-    model->setItem(2, 2, new QStandardItem("3"));
-    model->setItem(2, 3, new QStandardItem("1"));
-    model->setItem(2, 4, new QStandardItem("#ff0000ff"));
-    model->setItem(2, 5, new QStandardItem("0"));
-    model->setItem(2, 6, new QStandardItem(""));
+    QTextStream testDataStream(&testDataFile);
+    while (!testDataStream.atEnd()) {
+        QString line = testDataStream.readLine();
+        QRegExp data("^\"(.*)\"\\s*,\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*,\\s*(\\d+)\\s*,\\s*\"(.*)\"\\s*,\\s*\"(.*)\"\\s*$");
+        if (!data.exactMatch(line))
+            continue;
+
+        QStandardItemModel *model = qobject_cast<QStandardItemModel *>(m_tableView->model());
+
+        QList<QStandardItem *> row;
+        for (int i = 1; i < data.captureCount(); ++i)
+            row.append(new QStandardItem(data.cap(i)));
+
+        model->appendRow(row);
+    }
+
+    testDataFile.close();
 }
 
 void TestView::startTest()
@@ -72,13 +75,9 @@ void TestView::startTest()
         const int end = model->data(model->index(row, 2)).toInt();
         const QTextCharFormat::UnderlineStyle underlineStyle = static_cast<QTextCharFormat::UnderlineStyle>(model->data(model->index(row, 3)).toInt());
         const QColor &underlineColor = qvariant_cast<QColor>(model->data(model->index(row, 4)));
-        const bool backgroundEnabled = model->data(model->index(row, 5)).toBool();
+        const QColor &backgroundColor = qvariant_cast<QColor>(model->data(model->index(row, 6)));
 
-        QColor backgroundColor;
-        if (backgroundEnabled)
-            backgroundColor = qvariant_cast<QColor>(model->data(model->index(row, 6)));
-
-        emit sendEvent(start, end, underlineStyle, underlineColor, backgroundColor, input);
+        emit sendEvent(start, end, underlineStyle, underlineColor, backgroundColor.isValid() ? backgroundColor : Qt::white, input);
         QTest::qWait(1000);
     }
 }

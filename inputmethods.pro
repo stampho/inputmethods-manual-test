@@ -28,3 +28,9 @@ HEADERS  += \
     referenceview.h \
     testview.h \
     webview.h
+
+RESOURCES += \
+    test.qrc
+
+DISTFILES += \
+    testdata.csv

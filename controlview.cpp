@@ -26,6 +26,9 @@ ControlView::ControlView(QWidget *parent)
     m_underlineStyleCombo->addItem(tr("No Underline"), QVariant(QTextCharFormat::NoUnderline));
     m_underlineStyleCombo->addItem(tr("Single Underline"), QVariant(QTextCharFormat::SingleUnderline));
 
+    m_startSpin->setMinimum(-99);
+    m_endSpin->setMinimum(-99);
+
     m_sendEventButton->setText(tr("Send Event"));
 
     QFormLayout *layout = new QFormLayout;
