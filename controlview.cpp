@@ -13,6 +13,8 @@
 
 #include "colorpicker.h"
 
+#include <QDebug>
+
 ControlView::ControlView(QWidget *parent)
     : QWidget(parent)
     , m_underlineStyleCombo(new QComboBox)
@@ -53,8 +55,7 @@ void ControlView::receiveInputMethodData(int start,
 {
     m_startSpin->setValue(start);
     m_endSpin->setValue(end);
-    // TODO(pvarga): Choose index by data
-    m_underlineStyleCombo->setCurrentIndex(underlineStyle);
+    m_underlineStyleCombo->setCurrentIndex(m_underlineStyleCombo->findData(underlineStyle));
     m_underlineColorPicker->setColor(underlineColor);
     m_backgroundColorPicker->setColor(backgroundColor);
     m_inputLine->setText(input);
