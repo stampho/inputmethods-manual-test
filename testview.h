@@ -15,7 +15,7 @@ public:
 
 public slots:
     void loadTestData(const QString &);
-    void startTest();
+    void startOrCancelTest();
 
 signals:
     void sendEvent(int, int, QTextCharFormat::UnderlineStyle, const QColor &, const QColor &, const QString &);
@@ -23,6 +23,8 @@ signals:
 private:
     QTableView *m_tableView;
     QPushButton *m_testButton;
+
+    bool m_testRunning;
 };
 
 #endif // TESTVIEW_H

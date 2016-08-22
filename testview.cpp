@@ -15,9 +15,10 @@ TestView::TestView(QWidget *parent)
     : QWidget(parent)
     , m_tableView(new QTableView)
     , m_testButton(new QPushButton)
+    , m_testRunning(false)
 {
     m_testButton->setText(QStringLiteral("Start Test"));
-    connect(m_testButton, &QPushButton::clicked, this, &TestView::startTest);
+    connect(m_testButton, &QPushButton::clicked, this, &TestView::startOrCancelTest);
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(m_tableView);
@@ -64,11 +65,27 @@ void TestView::loadTestData(const QString &testDataPath)
     testDataFile.close();
 }
 
-void TestView::startTest()
+void TestView::startOrCancelTest()
 {
+    if (m_testRunning) {
+        m_testRunning = false;
+        m_testButton->setText(QStringLiteral("Start Test"));
+        return;
+    }
+
+    m_testButton->setText(QStringLiteral("Cancel Test"));
     QStandardItemModel *model = static_cast<QStandardItemModel *>(m_tableView->model());
 
-    for (int row = 0; row < model->rowCount(); ++row) {
+    int firstRowIndex = m_tableView->currentIndex().row() + 1;
+
+    if (firstRowIndex == model->rowCount())
+        firstRowIndex = 0;
+
+    m_testRunning = true;
+    for (int row = firstRowIndex; row < model->rowCount(); ++row) {
+        if (!m_testRunning)
+            break;
+
         m_tableView->selectRow(row);
         const QString &input = model->data(model->index(row, 0)).toString();
         const int start = model->data(model->index(row, 1)).toInt();
@@ -79,5 +96,10 @@ void TestView::startTest()
 
         emit sendEvent(start, end, underlineStyle, underlineColor, backgroundColor.isValid() ? backgroundColor : Qt::white, input);
         QTest::qWait(1000);
+    }
+
+    if (m_testRunning) {
+        m_testRunning = false;
+        m_testButton->setText(QStringLiteral("Start Test"));
     }
 }
