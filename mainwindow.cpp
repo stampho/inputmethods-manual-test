@@ -24,8 +24,9 @@ MainWindow::MainWindow(QWidget *parent)
     m_controlView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     m_controlView->setFixedWidth(300);
 
-    m_webView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    m_webView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     m_webView->setFixedWidth(280);
+    m_webView->setFixedHeight(150);
 
     m_testView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_testView->setMinimumWidth(400);
