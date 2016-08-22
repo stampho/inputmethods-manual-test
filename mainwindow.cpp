@@ -21,9 +21,20 @@ MainWindow::MainWindow(QWidget *parent)
     , m_referenceProcessed(new QLabel)
     , m_webProcessed(new QLabel)
 {
+    m_controlView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    m_controlView->setFixedWidth(300);
+
+    m_webView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    m_webView->setFixedWidth(280);
+
+    m_testView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_testView->setMinimumWidth(400);
+
     QWidget *centralWidget = new QWidget;
 
     QGroupBox *referenceGroup = new QGroupBox(QStringLiteral("Reference"));
+    referenceGroup->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
+    referenceGroup->setMinimumWidth(300);
     QFormLayout *referenceProcessedForm = new QFormLayout;
     referenceProcessedForm->addRow(tr("Processed:"), m_referenceProcessed);
     QVBoxLayout *referenceLayout = new QVBoxLayout;
@@ -32,6 +43,8 @@ MainWindow::MainWindow(QWidget *parent)
     referenceGroup->setLayout(referenceLayout);
 
     QGroupBox *webGroup = new QGroupBox(QStringLiteral("Web"));
+    webGroup->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
+    webGroup->setMinimumWidth(300);
     QFormLayout *webProcessedForm = new QFormLayout;
     webProcessedForm->addRow(tr("Processed:"), m_webProcessed);
     QVBoxLayout *webLayout = new QVBoxLayout;
@@ -46,7 +59,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     QHBoxLayout *centralLayout = new QHBoxLayout;
     centralLayout->addLayout(leftLayout);
-    // TODO(pvarga): Resizing doesn't grow Test View
     centralLayout->addWidget(m_testView);
 
     connect(m_testView, SIGNAL(sendEvent(int,int,QTextCharFormat::UnderlineStyle,QColor,QColor,QString)),

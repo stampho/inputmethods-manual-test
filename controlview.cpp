@@ -25,8 +25,6 @@ ControlView::ControlView(QWidget *parent)
 {
     m_underlineStyleCombo->addItem(tr("No Underline"), QVariant(QTextCharFormat::NoUnderline));
     m_underlineStyleCombo->addItem(tr("Single Underline"), QVariant(QTextCharFormat::SingleUnderline));
-    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    setFixedWidth(300);
 
     m_sendEventButton->setText(tr("Send Event"));
 

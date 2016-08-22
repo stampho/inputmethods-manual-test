@@ -6,9 +6,6 @@
 WebView::WebView(QWidget *parent)
     : QWebEngineView(parent)
 {
-    setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    setFixedWidth(300);
-
     const QString html = QStringLiteral(
             "<html><head>"
             "   <style>"
@@ -24,7 +21,5 @@ WebView::WebView(QWidget *parent)
             "   <input type='text' id='input1' />"
             "</body></html>");
 
-    // TODO(pvarga): Do we need this?
-    page()->settings()->setFontFamily(QWebEngineSettings::SerifFont, "FooSerifFont");
     setHtml(html);
 }

@@ -14,9 +14,6 @@ TestView::TestView(QWidget *parent)
     , m_tableView(new QTableView)
     , m_testButton(new QPushButton)
 {
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    setMinimumWidth(400);
-
     m_testButton->setText(QStringLiteral("Start Test"));
     connect(m_testButton, &QPushButton::clicked, this, &TestView::startTest);
 
