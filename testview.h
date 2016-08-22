@@ -16,9 +16,11 @@ public:
 public slots:
     void loadTestData(const QString &);
     void startOrCancelTest();
+    void collectAndSendData();
 
 signals:
-    void sendEvent(int, int, QTextCharFormat::UnderlineStyle, const QColor &, const QColor &, const QString &);
+    void sendInputMethodData(int, int, QTextCharFormat::UnderlineStyle, const QColor &, const QColor &, const QString &);
+    void requestInputMethodEvent();
 
 private:
     QTableView *m_tableView;

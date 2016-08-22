@@ -61,10 +61,10 @@ MainWindow::MainWindow(QWidget *parent)
     centralLayout->addLayout(leftLayout);
     centralLayout->addWidget(m_testView);
 
-    connect(m_testView, SIGNAL(sendEvent(int,int,QTextCharFormat::UnderlineStyle,QColor,QColor,QString)),
-            m_controlView, SLOT(sendEvent(int,int,QTextCharFormat::UnderlineStyle,QColor,QColor,QString)));
+    connect(m_testView, &TestView::sendInputMethodData, m_controlView, &ControlView::receiveInputMethodData);
+    connect(m_testView, &TestView::requestInputMethodEvent, m_controlView, &ControlView::createAndSendInputMethodEvent);
 
-    connect(m_controlView, &ControlView::forwardEvent, [=](QInputMethodEvent im) {
+    connect(m_controlView, &ControlView::sendInputMethodEvent, [=](QInputMethodEvent im) {
         bool processed;
         QString resultText;
 

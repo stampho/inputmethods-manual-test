@@ -34,6 +34,7 @@ TestView::TestView(QWidget *parent)
     model->setHorizontalHeaderItem(5, new QStandardItem(tr("Background Color")));
 
     m_tableView->setModel(model);
+    connect(m_tableView, &QTableView::clicked, this, &TestView::collectAndSendData);
 
     loadTestData(":/testdata.csv");
 }
@@ -73,28 +74,21 @@ void TestView::startOrCancelTest()
         return;
     }
 
+    m_testRunning = true;
     m_testButton->setText(QStringLiteral("Cancel Test"));
-    QStandardItemModel *model = static_cast<QStandardItemModel *>(m_tableView->model());
 
     int firstRowIndex = m_tableView->currentIndex().row() + 1;
-
-    if (firstRowIndex == model->rowCount())
+    if (firstRowIndex == m_tableView->model()->rowCount())
         firstRowIndex = 0;
 
-    m_testRunning = true;
-    for (int row = firstRowIndex; row < model->rowCount(); ++row) {
+    for (int row = firstRowIndex; row < m_tableView->model()->rowCount(); ++row) {
         if (!m_testRunning)
             break;
 
         m_tableView->selectRow(row);
-        const QString &input = model->data(model->index(row, 0)).toString();
-        const int start = model->data(model->index(row, 1)).toInt();
-        const int end = model->data(model->index(row, 2)).toInt();
-        const QTextCharFormat::UnderlineStyle underlineStyle = static_cast<QTextCharFormat::UnderlineStyle>(model->data(model->index(row, 3)).toInt());
-        const QColor &underlineColor = qvariant_cast<QColor>(model->data(model->index(row, 4)));
-        const QColor &backgroundColor = qvariant_cast<QColor>(model->data(model->index(row, 6)));
+        collectAndSendData();
+        emit requestInputMethodEvent();
 
-        emit sendEvent(start, end, underlineStyle, underlineColor, backgroundColor.isValid() ? backgroundColor : Qt::white, input);
         QTest::qWait(1000);
     }
 
@@ -102,4 +96,19 @@ void TestView::startOrCancelTest()
         m_testRunning = false;
         m_testButton->setText(QStringLiteral("Start Test"));
     }
+}
+
+void TestView::collectAndSendData()
+{
+    int row = m_tableView->currentIndex().row();
+    QStandardItemModel *model = static_cast<QStandardItemModel *>(m_tableView->model());
+
+    const QString &input = model->data(model->index(row, 0)).toString();
+    const int start = model->data(model->index(row, 1)).toInt();
+    const int end = model->data(model->index(row, 2)).toInt();
+    const QTextCharFormat::UnderlineStyle underlineStyle = static_cast<QTextCharFormat::UnderlineStyle>(model->data(model->index(row, 3)).toInt());
+    const QColor &underlineColor = qvariant_cast<QColor>(model->data(model->index(row, 4)));
+    const QColor &backgroundColor = qvariant_cast<QColor>(model->data(model->index(row, 6)));
+
+    emit sendInputMethodData(start, end, underlineStyle, underlineColor, backgroundColor.isValid() ? backgroundColor : Qt::white, input);
 }

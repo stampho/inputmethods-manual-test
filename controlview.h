@@ -19,11 +19,11 @@ public:
     explicit ControlView(QWidget *parent = 0);
 
 public slots:
-    void sendEvent(int, int, QTextCharFormat::UnderlineStyle, const QColor &, const QColor &, const QString &);
-    void sendEvent();
+    void receiveInputMethodData(int, int, QTextCharFormat::UnderlineStyle, const QColor &, const QColor &, const QString &);
+    void createAndSendInputMethodEvent();
 
 signals:
-    void forwardEvent(QInputMethodEvent);
+    void sendInputMethodEvent(QInputMethodEvent);
 
 private:
     QComboBox *m_underlineStyleCombo;

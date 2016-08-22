@@ -29,7 +29,7 @@ ControlView::ControlView(QWidget *parent)
     m_startSpin->setMinimum(-99);
     m_endSpin->setMinimum(-99);
 
-    m_sendEventButton->setText(tr("Send Event"));
+    m_sendEventButton->setText(tr("Send Input Method Event"));
 
     QFormLayout *layout = new QFormLayout;
     layout->addRow(tr("Underline Style:"), m_underlineStyleCombo);
@@ -41,15 +41,15 @@ ControlView::ControlView(QWidget *parent)
     layout->addRow(m_sendEventButton);
     setLayout(layout);
 
-    connect(m_sendEventButton, SIGNAL(clicked(bool)), this, SLOT(sendEvent()));
+    connect(m_sendEventButton, &QPushButton::clicked, this, &ControlView::createAndSendInputMethodEvent);
 }
 
-void ControlView::sendEvent(int start,
-                            int end,
-                            QTextCharFormat::UnderlineStyle underlineStyle,
-                            const QColor &underlineColor,
-                            const QColor &backgroundColor,
-                            const QString &input)
+void ControlView::receiveInputMethodData(int start,
+                                         int end,
+                                         QTextCharFormat::UnderlineStyle underlineStyle,
+                                         const QColor &underlineColor,
+                                         const QColor &backgroundColor,
+                                         const QString &input)
 {
     m_startSpin->setValue(start);
     m_endSpin->setValue(end);
@@ -58,11 +58,9 @@ void ControlView::sendEvent(int start,
     m_underlineColorPicker->setColor(underlineColor);
     m_backgroundColorPicker->setColor(backgroundColor);
     m_inputLine->setText(input);
-
-    sendEvent();
 }
 
-void ControlView::sendEvent()
+void ControlView::createAndSendInputMethodEvent()
 {
     int start = m_startSpin->value();
     int end = m_endSpin->value();
@@ -79,5 +77,5 @@ void ControlView::sendEvent()
     attrs.append(QInputMethodEvent::Attribute(QInputMethodEvent::TextFormat, start, end, format));
     QInputMethodEvent im(m_inputLine->text(), attrs);
 
-    emit forwardEvent(im);
+    emit sendInputMethodEvent(im);
 }
