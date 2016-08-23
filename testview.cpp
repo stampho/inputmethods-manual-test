@@ -57,7 +57,7 @@ void TestView::loadTestData(const QString &testDataPath)
         QStandardItemModel *model = qobject_cast<QStandardItemModel *>(m_tableView->model());
 
         QList<QStandardItem *> row;
-        for (int i = 1; i < data.captureCount(); ++i)
+        for (int i = 1; i <= data.captureCount(); ++i)
             row.append(new QStandardItem(data.cap(i)));
 
         model->appendRow(row);
@@ -108,7 +108,7 @@ void TestView::collectAndSendData()
     const int end = model->data(model->index(row, 2)).toInt();
     const QTextCharFormat::UnderlineStyle underlineStyle = static_cast<QTextCharFormat::UnderlineStyle>(model->data(model->index(row, 3)).toInt());
     const QColor &underlineColor = qvariant_cast<QColor>(model->data(model->index(row, 4)));
-    const QColor &backgroundColor = qvariant_cast<QColor>(model->data(model->index(row, 6)));
+    const QColor &backgroundColor = qvariant_cast<QColor>(model->data(model->index(row, 5)));
 
     emit sendInputMethodData(start, end, underlineStyle, underlineColor, backgroundColor.isValid() ? backgroundColor : Qt::white, input);
 }
